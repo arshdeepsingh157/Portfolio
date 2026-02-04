@@ -35,7 +35,7 @@ export default function ContactPage() {
     // This is a "mailto:" bridge.
     const subject = encodeURIComponent(`SOC Portfolio Contact — ${name}`);
     const body = encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${msg}\n`);
-    window.location.href = `mailto:arshdeep.singh@example.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:sa6763205@gmail.com?subject=${subject}&body=${body}`;
     setSent(true);
     toast({ title: "Draft opened", description: "Email client opened with your message." });
   };
@@ -57,7 +57,7 @@ export default function ContactPage() {
               <div className="mt-4 grid gap-3">
                 <button
                   type="button"
-                  onClick={() => copy("arshdeep.singh@example.com", "Email")}
+                  onClick={() => copy("sa6763205@gmail.com", "Email")}
                   data-testid="contact-copy-email"
                   className="rounded-2xl border border-border/70 bg-background/25 p-4 text-left hover-elevate transition-all duration-300"
                 >
@@ -69,7 +69,7 @@ export default function ContactPage() {
                       <div className="min-w-0">
                         <div className="font-semibold">Email</div>
                         <div className="mt-1 text-xs font-mono text-muted-foreground truncate">
-                          arshdeep.singh@example.com
+                          sa6763205@gmail.com
                         </div>
                       </div>
                     </div>
@@ -80,7 +80,7 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <Button
                     variant="secondary"
-                    onClick={() => window.open("https://www.linkedin.com/", "_blank", "noopener,noreferrer")}
+                    onClick={() => window.open("https://www.linkedin.com/in/arshdeep-singh-742973240/", "_blank", "noopener,noreferrer")}
                     data-testid="contact-linkedin"
                     className="gap-2"
                   >
@@ -89,7 +89,7 @@ export default function ContactPage() {
                   </Button>
                   <Button
                     variant="secondary"
-                    onClick={() => window.open("https://github.com/", "_blank", "noopener,noreferrer")}
+                    onClick={() => window.open("https://github.com/arshdeepsingh157", "_blank", "noopener,noreferrer")}
                     data-testid="contact-github"
                     className="gap-2"
                   >
