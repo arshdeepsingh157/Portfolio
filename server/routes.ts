@@ -39,7 +39,8 @@ export async function registerRoutes(
   });
 
   app.get(api.alerts.get.path, async (req, res) => {
-    const alert = await storage.getAlert(req.params.id);
+    const id = req.params.id as string;
+    const alert = await storage.getAlert(id);
     if (!alert) {
       return res.status(404).json({ message: "Alert not found" });
     }
@@ -61,8 +62,9 @@ export async function registerRoutes(
 
   app.put(api.alerts.update.path, async (req, res) => {
     try {
+      const id = req.params.id as string;
       const input = insertPortfolioAlertSchema.partial().parse(req.body);
-      const updated = await storage.updateAlert(req.params.id, input);
+      const updated = await storage.updateAlert(id, input);
       if (!updated) {
         return res.status(404).json({ message: "Alert not found" });
       }
@@ -81,7 +83,8 @@ export async function registerRoutes(
   });
 
   app.get(api.projects.get.path, async (req, res) => {
-    const row = await storage.getProject(req.params.id);
+    const id = req.params.id as string;
+    const row = await storage.getProject(id);
     if (!row) {
       return res.status(404).json({ message: "Project not found" });
     }
@@ -103,8 +106,9 @@ export async function registerRoutes(
 
   app.put(api.projects.update.path, async (req, res) => {
     try {
+      const id = req.params.id as string;
       const input = insertPortfolioProjectSchema.partial().parse(req.body);
-      const updated = await storage.updateProject(req.params.id, input);
+      const updated = await storage.updateProject(id, input);
       if (!updated) {
         return res.status(404).json({ message: "Project not found" });
       }

@@ -44,7 +44,7 @@ const navItems: NavItem[] = [
 
 function useTheme() {
   const [isDark, setIsDark] = useState(() => {
-    return document.documentElement.classList.contains("dark") || true;
+    return document.documentElement.classList.contains("dark");
   });
 
   const setDark = (next: boolean) => {
