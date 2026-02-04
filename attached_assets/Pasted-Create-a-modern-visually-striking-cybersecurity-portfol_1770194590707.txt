@@ -1,0 +1,165 @@
+Create a modern, visually striking cybersecurity portfolio website for Arshdeep Singh, a B.Tech CSE (Cybersecurity specialization) student and Cybersecurity Trainer with a strong focus on SOC Analyst and Defensive Security roles.
+
+🎨 Design & Theme
+Dark cybersecurity theme (black / dark blue background)
+
+Neon accents (green, cyan, purple)
+
+Hacker/SOC dashboard aesthetic
+
+Clean, professional, recruiter-friendly
+
+✨ Animations & Effects
+Smooth page transitions and scroll animations
+
+Animated terminal typing effect for intro text
+
+Hover animations on cards (projects, skills, certifications)
+
+Subtle background effects:
+
+moving grid
+
+binary/code rain
+
+network node connections
+
+Skill progress bars with animated fill
+
+🧩 Sections to Include
+1. Hero Section
+Name: Arshdeep Singh
+
+Title: Cybersecurity Analyst | SOC Enthusiast | Defensive Security
+
+Animated text cycling through:
+
+SOC Analyst
+
+SIEM Monitoring
+
+Threat Detection
+
+Blue Team Security
+
+CTA buttons:
+
+“View Projects”
+
+“Download Resume”
+
+2. About Me
+Brief professional summary highlighting:
+
+Cybersecurity Trainer at TECHCADD, Mohali
+
+Hands-on experience with SOC tools, Linux, SIEM
+
+Passion for defensive security and threat detection
+
+3. Skills (Animated Cards)
+Categorize skills into:
+
+Cybersecurity:
+
+SIEM (Splunk, Wazuh)
+
+IDS / IPS
+
+Firewalls
+
+Threat Detection & Prevention
+
+Systems & Networking:
+
+Linux
+
+Networking fundamentals
+
+Windows Server
+
+Tools & Platforms:
+
+TryHackMe
+
+Metasploitable-2
+
+Cisco Packet Tracer
+
+4. Experience
+Cybersecurity Trainer & Analyst – TECHCADD, Mohali
+
+Working on cybersecurity projects
+
+Training students in cybersecurity fundamentals, SOC concepts, Linux, and tools
+
+Add timeline animation
+
+5. Projects (Important – Visual Cards)
+Each project card should have icon + animation + modal popup
+
+SQL Injection Lab
+
+Simulated SQLi attacks and implemented prevention
+
+Password Strength Analyzer (Python)
+
+Tool to score and analyze password strength
+
+SIEM Lab
+
+Setup SIEM to monitor threats on localhost
+
+Firewall Lab
+
+Demonstrated firewall rules and traffic filtering
+
+6. Certifications & Training
+Certified Network Security Expert – CDI
+
+Web Security – CDI
+
+Defensive Security – Sensation Software Solutions
+
+Cisco Networking Labs – Udemy
+
+7. Achievements
+Reported vulnerabilities in University ERP system
+
+Gold Medal – AIU North Zone Bhangra
+
+Silver Medal – AIU National Bhangra
+
+8. Labs & Platforms
+SOC & Log Analysis labs (TryHackMe)
+
+Virtual labs showcase with badges
+
+9. Contact Section
+Email
+
+LinkedIn
+
+Smooth animated icons
+
+🛠 Tech Stack Preference
+Frontend: React / Next.js
+
+Styling: Tailwind CSS
+
+Animations: Framer Motion / GSAP
+
+Optional: Three.js for background effects
+
+🎯 Overall Goal
+The portfolio should instantly communicate:
+
+Defensive Security mindset
+
+SOC readiness
+
+Hands-on lab experience
+
+Professional yet hacker-inspired identity
+
+Optimize layout for recruiters, SOC hiring managers, and cybersecurity trainers.
