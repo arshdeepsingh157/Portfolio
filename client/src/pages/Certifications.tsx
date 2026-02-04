@@ -9,10 +9,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { FileX2, Plus } from "lucide-react";
 import { useCertifications } from "@/hooks/use-portfolio";
+import { isAdmin } from "@/lib/admin";
 
 export default function CertificationsPage() {
   const q = useCertifications();
   const [open, setOpen] = useState(false);
+  const admin = isAdmin();
 
   const sorted = useMemo(() => {
     const items = q.data ?? [];
@@ -32,9 +34,11 @@ export default function CertificationsPage() {
           eyebrow="credentials"
           data-testid="certifications-header"
           right={
-            <Button onClick={() => setOpen(true)} data-testid="certifications-create" className="gap-2">
-              <Plus className="h-4 w-4" /> Add Certification
-            </Button>
+            admin ? (
+              <Button onClick={() => setOpen(true)} data-testid="certifications-create" className="gap-2">
+                <Plus className="h-4 w-4" /> Add Certification
+              </Button>
+            ) : null
           }
         />
 
@@ -63,9 +67,11 @@ export default function CertificationsPage() {
             <div className="mt-3 text-sm font-semibold">No certifications</div>
             <div className="mt-1 text-xs font-mono text-muted-foreground">Add your first credential.</div>
             <div className="mt-4">
-              <Button onClick={() => setOpen(true)} data-testid="certifications-empty-create">
-                Add Certification
-              </Button>
+              {admin ? (
+                <Button onClick={() => setOpen(true)} data-testid="certifications-empty-create">
+                  Add Certification
+                </Button>
+              ) : null}
             </div>
           </Card>
         ) : (
@@ -96,7 +102,7 @@ export default function CertificationsPage() {
         )}
       </div>
 
-      <CertificationCreateDialog open={open} onOpenChange={setOpen} />
+      {admin ? <CertificationCreateDialog open={open} onOpenChange={setOpen} /> : null}
     </AppShell>
   );
 }

@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { FileX2, Plus, SlidersHorizontal } from "lucide-react";
 import { useAlertsList } from "@/hooks/use-portfolio";
+import { isAdmin } from "@/lib/admin";
 
 export default function AlertsPage() {
   const [severity, setSeverity] = useState<string>("all");
@@ -31,6 +32,7 @@ export default function AlertsPage() {
   }, [severity, status, suppressed, search]);
 
   const q = useAlertsList(params);
+  const admin = isAdmin();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -57,17 +59,19 @@ export default function AlertsPage() {
           data-testid="alerts-header"
           right={
             <div className="flex items-center gap-2">
-              <Button
-                onClick={() => {
-                  setFormMode("create");
-                  setFormOpen(true);
-                }}
-                data-testid="alerts-create"
-                className="gap-2"
-              >
-                <Plus className="h-4 w-4" />
-                Create Alert
-              </Button>
+              {admin ? (
+                <Button
+                  onClick={() => {
+                    setFormMode("create");
+                    setFormOpen(true);
+                  }}
+                  data-testid="alerts-create"
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create Alert
+                </Button>
+              ) : null}
             </div>
           }
         />
@@ -181,15 +185,17 @@ export default function AlertsPage() {
                 Adjust filters or create a new alert.
               </div>
               <div className="mt-4">
-                <Button
-                  onClick={() => {
-                    setFormMode("create");
-                    setFormOpen(true);
-                  }}
-                  data-testid="empty-create-alert"
-                >
-                  Create Alert
-                </Button>
+                {admin ? (
+                  <Button
+                    onClick={() => {
+                      setFormMode("create");
+                      setFormOpen(true);
+                    }}
+                    data-testid="empty-create-alert"
+                  >
+                    Create Alert
+                  </Button>
+                ) : null}
               </div>
             </div>
           ) : (
@@ -235,17 +241,19 @@ export default function AlertsPage() {
                       <SeverityBadge severity={a.severity} />
                       <StatusBadge status={a.status} />
                       <Separator orientation="vertical" className="h-7 bg-border/70 hidden sm:block" />
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          setFormMode("edit");
-                          setSelectedId(a.id);
-                          setFormOpen(true);
-                        }}
-                        data-testid={`alert-edit-${idx}`}
-                      >
-                        Edit
-                      </Button>
+                      {admin ? (
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            setFormMode("edit");
+                            setSelectedId(a.id);
+                            setFormOpen(true);
+                          }}
+                          data-testid={`alert-edit-${idx}`}
+                        >
+                          Edit
+                        </Button>
+                      ) : null}
                       <Button
                         variant="secondary"
                         onClick={() => {
@@ -266,12 +274,14 @@ export default function AlertsPage() {
       </div>
 
       <AlertDrawer open={drawerOpen} onOpenChange={setDrawerOpen} alert={selected as any} />
-      <AlertFormDialog
-        open={formOpen}
-        onOpenChange={setFormOpen}
-        mode={formMode}
-        initial={formMode === "edit" ? (selected as any) : null}
-      />
+      {admin ? (
+        <AlertFormDialog
+          open={formOpen}
+          onOpenChange={setFormOpen}
+          mode={formMode}
+          initial={formMode === "edit" ? (selected as any) : null}
+        />
+      ) : null}
     </AppShell>
   );
 }

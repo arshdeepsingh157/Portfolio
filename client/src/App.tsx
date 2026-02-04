@@ -1,9 +1,11 @@
 import { Switch, Route } from "wouter";
+import { useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import { syncAdminFromQuery } from "@/lib/admin";
 
 import Dashboard from "@/pages/Dashboard";
 import Alerts from "@/pages/Alerts";
@@ -34,6 +36,10 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    syncAdminFromQuery();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

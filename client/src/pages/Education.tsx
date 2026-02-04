@@ -9,10 +9,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { FileX2, GraduationCap, Plus } from "lucide-react";
 import { useEducation } from "@/hooks/use-portfolio";
+import { isAdmin } from "@/lib/admin";
 
 export default function EducationPage() {
   const q = useEducation();
   const [open, setOpen] = useState(false);
+  const admin = isAdmin();
 
   const sorted = useMemo(() => {
     const items = q.data ?? [];
@@ -36,9 +38,11 @@ export default function EducationPage() {
           eyebrow="academics"
           data-testid="education-header"
           right={
-            <Button onClick={() => setOpen(true)} data-testid="education-create" className="gap-2">
-              <Plus className="h-4 w-4" /> Add Education
-            </Button>
+            admin ? (
+              <Button onClick={() => setOpen(true)} data-testid="education-create" className="gap-2">
+                <Plus className="h-4 w-4" /> Add Education
+              </Button>
+            ) : null
           }
         />
 
@@ -69,9 +73,11 @@ export default function EducationPage() {
               Add your academic history.
             </div>
             <div className="mt-4">
-              <Button onClick={() => setOpen(true)} data-testid="education-empty-create">
-                Add Education
-              </Button>
+              {admin ? (
+                <Button onClick={() => setOpen(true)} data-testid="education-empty-create">
+                  Add Education
+                </Button>
+              ) : null}
             </div>
           </Card>
         ) : (
@@ -115,7 +121,7 @@ export default function EducationPage() {
         )}
       </div>
 
-      <EducationCreateDialog open={open} onOpenChange={setOpen} />
+      {admin ? <EducationCreateDialog open={open} onOpenChange={setOpen} /> : null}
     </AppShell>
   );
 }

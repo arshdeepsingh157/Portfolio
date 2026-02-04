@@ -10,11 +10,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { FileX2, Plus, Search, FlaskConical } from "lucide-react";
 import { useLabs } from "@/hooks/use-portfolio";
+import { isAdmin } from "@/lib/admin";
 
 export default function LabsPage() {
   const q = useLabs();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const admin = isAdmin();
 
   const filtered = useMemo(() => {
     const s = search.trim().toLowerCase();
@@ -43,9 +45,11 @@ export default function LabsPage() {
           eyebrow="hands-on"
           data-testid="labs-header"
           right={
-            <Button onClick={() => setOpen(true)} data-testid="labs-create" className="gap-2">
-              <Plus className="h-4 w-4" /> Add Lab
-            </Button>
+            admin ? (
+              <Button onClick={() => setOpen(true)} data-testid="labs-create" className="gap-2">
+                <Plus className="h-4 w-4" /> Add Lab
+              </Button>
+            ) : null
           }
         />
 
@@ -87,9 +91,11 @@ export default function LabsPage() {
             <div className="mt-3 text-sm font-semibold">No matching labs</div>
             <div className="mt-1 text-xs font-mono text-muted-foreground">Add a lab record to populate this page.</div>
             <div className="mt-4">
-              <Button onClick={() => setOpen(true)} data-testid="labs-empty-create">
-                Add Lab
-              </Button>
+              {admin ? (
+                <Button onClick={() => setOpen(true)} data-testid="labs-empty-create">
+                  Add Lab
+                </Button>
+              ) : null}
             </div>
           </Card>
         ) : (
@@ -130,7 +136,7 @@ export default function LabsPage() {
         )}
       </div>
 
-      <LabCreateDialog open={open} onOpenChange={setOpen} />
+      {admin ? <LabCreateDialog open={open} onOpenChange={setOpen} /> : null}
     </AppShell>
   );
 }

@@ -9,10 +9,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { FileX2, Plus, BriefcaseBusiness } from "lucide-react";
 import { useExperience } from "@/hooks/use-portfolio";
+import { isAdmin } from "@/lib/admin";
 
 export default function ExperiencePage() {
   const q = useExperience();
   const [open, setOpen] = useState(false);
+  const admin = isAdmin();
 
   const sorted = useMemo(() => {
     const items = q.data ?? [];
@@ -36,9 +38,11 @@ export default function ExperiencePage() {
           eyebrow="timeline"
           data-testid="experience-header"
           right={
-            <Button onClick={() => setOpen(true)} data-testid="experience-create" className="gap-2">
-              <Plus className="h-4 w-4" /> Add Experience
-            </Button>
+            admin ? (
+              <Button onClick={() => setOpen(true)} data-testid="experience-create" className="gap-2">
+                <Plus className="h-4 w-4" /> Add Experience
+              </Button>
+            ) : null
           }
         />
 
@@ -69,9 +73,11 @@ export default function ExperiencePage() {
               Add a role, internship, training, or volunteer entry.
             </div>
             <div className="mt-4">
-              <Button onClick={() => setOpen(true)} data-testid="experience-empty-create">
-                Add Experience
-              </Button>
+              {admin ? (
+                <Button onClick={() => setOpen(true)} data-testid="experience-empty-create">
+                  Add Experience
+                </Button>
+              ) : null}
             </div>
           </Card>
         ) : (
@@ -119,7 +125,7 @@ export default function ExperiencePage() {
         )}
       </div>
 
-      <ExperienceCreateDialog open={open} onOpenChange={setOpen} />
+      {admin ? <ExperienceCreateDialog open={open} onOpenChange={setOpen} /> : null}
     </AppShell>
   );
 }

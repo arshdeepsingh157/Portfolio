@@ -12,9 +12,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { FileX2, Plus, Github, ExternalLink, Search } from "lucide-react";
 import { useProjects } from "@/hooks/use-portfolio";
+import { isAdmin } from "@/lib/admin";
 
 export default function ProjectsPage() {
   const q = useProjects();
+  const admin = isAdmin();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -59,17 +61,19 @@ export default function ProjectsPage() {
           eyebrow="capabilities"
           data-testid="projects-header"
           right={
-            <Button
-              onClick={() => {
-                setFormMode("create");
-                setFormOpen(true);
-              }}
-              data-testid="projects-create"
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Create Project
-            </Button>
+            admin ? (
+              <Button
+                onClick={() => {
+                  setFormMode("create");
+                  setFormOpen(true);
+                }}
+                data-testid="projects-create"
+                className="gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Create Project
+              </Button>
+            ) : null
           }
         />
 
@@ -134,15 +138,17 @@ export default function ProjectsPage() {
               Try different filters, or create a new project record.
             </div>
             <div className="mt-4">
-              <Button
-                onClick={() => {
-                  setFormMode("create");
-                  setFormOpen(true);
-                }}
-                data-testid="projects-empty-create"
-              >
-                Create Project
-              </Button>
+              {admin ? (
+                <Button
+                  onClick={() => {
+                    setFormMode("create");
+                    setFormOpen(true);
+                  }}
+                  data-testid="projects-empty-create"
+                >
+                  Create Project
+                </Button>
+              ) : null}
             </div>
           </Card>
         ) : (
@@ -180,17 +186,19 @@ export default function ProjectsPage() {
                   >
                     Open
                   </Button>
-                  <Button
-                    onClick={() => {
-                      setSelectedId(p.id);
-                      setFormMode("edit");
-                      setFormOpen(true);
-                    }}
-                    variant="secondary"
-                    data-testid={`project-edit-${idx}`}
-                  >
-                    Edit
-                  </Button>
+                  {admin ? (
+                    <Button
+                      onClick={() => {
+                        setSelectedId(p.id);
+                        setFormMode("edit");
+                        setFormOpen(true);
+                      }}
+                      variant="secondary"
+                      data-testid={`project-edit-${idx}`}
+                    >
+                      Edit
+                    </Button>
+                  ) : null}
                 </div>
               </Card>
             ))}
@@ -199,7 +207,14 @@ export default function ProjectsPage() {
       </div>
 
       <ProjectModal open={open} onOpenChange={setOpen} project={selected as any} />
-      <ProjectFormDialog open={formOpen} onOpenChange={setFormOpen} mode={formMode} initial={formMode === "edit" ? (selected as any) : null} />
+      {admin ? (
+        <ProjectFormDialog
+          open={formOpen}
+          onOpenChange={setFormOpen}
+          mode={formMode}
+          initial={formMode === "edit" ? (selected as any) : null}
+        />
+      ) : null}
     </AppShell>
   );
 }
