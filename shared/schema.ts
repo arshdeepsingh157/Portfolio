@@ -186,6 +186,36 @@ export type InsertPortfolioExperienceItem = z.infer<
   typeof insertPortfolioExperienceSchema
 >;
 
+export const educationLevelEnum = pgEnum("education_level", [
+  "bachelors",
+  "senior_secondary",
+  "secondary",
+  "diploma",
+  "other",
+]);
+
+export const portfolioEducation = pgTable("portfolio_education", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  institution: text("institution").notNull(),
+  location: text("location").notNull(),
+  level: educationLevelEnum("level").notNull(),
+  degree: text("degree").notNull(),
+  field: text("field").notNull(),
+  startYear: integer("start_year").notNull(),
+  endYear: integer("end_year"),
+  status: text("status").notNull(),
+  details: text("details").notNull(),
+});
+
+export const insertPortfolioEducationSchema = createInsertSchema(
+  portfolioEducation,
+).omit({ id: true });
+
+export type PortfolioEducation = typeof portfolioEducation.$inferSelect;
+export type InsertPortfolioEducation = z.infer<
+  typeof insertPortfolioEducationSchema
+>;
+
 export const achievementTypeEnum = pgEnum("achievement_type", [
   "security",
   "award",
@@ -215,6 +245,7 @@ export type PortfolioOverviewResponse = {
   projects: PortfolioProject[];
   certifications: PortfolioCertification[];
   experience: PortfolioExperienceItem[];
+  education: PortfolioEducation[];
   achievements: PortfolioAchievement[];
   labs: PortfolioLab[];
 };

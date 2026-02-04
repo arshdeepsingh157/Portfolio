@@ -1,15 +1,12 @@
 import { useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { FileX2, Radar, Siren, ShieldCheck, FlaskConical, GraduationCap, FolderKanban, Activity } from "lucide-react";
+import { Radar, ShieldCheck, FlaskConical, GraduationCap, FolderKanban, Activity } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Seo } from "@/components/Seo";
 import { TerminalHero } from "@/components/TerminalHero";
 import { SectionHeader } from "@/components/SectionHeader";
 import { KpiCard } from "@/components/KpiCard";
-import { SeverityBadge } from "@/components/SeverityBadge";
-import { StatusBadge } from "@/components/StatusBadge";
-import { AlertDrawer } from "@/components/AlertDrawer";
 import { ProjectModal } from "@/components/ProjectModal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,16 +17,8 @@ import { usePortfolioOverview } from "@/hooks/use-portfolio";
 export default function Dashboard() {
   const [, nav] = useLocation();
   const overview = usePortfolioOverview();
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null);
-
   const [projectOpen, setProjectOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
-
-  const selectedAlert = useMemo(() => {
-    if (!overview.data || !selectedAlertId) return null;
-    return overview.data.alerts.find((a) => a.id === selectedAlertId) ?? null;
-  }, [overview.data, selectedAlertId]);
 
   const selectedProject = useMemo(() => {
     if (!overview.data || !selectedProjectId) return null;
@@ -37,14 +26,9 @@ export default function Dashboard() {
   }, [overview.data, selectedProjectId]);
 
   const kpis = useMemo(() => {
-    const alerts = overview.data?.alerts ?? [];
-    const open = alerts.filter((a) => a.status === "open" || a.status === "investigating" || a.status === "contained");
-    const hiCrit = alerts.filter((a) => a.severity === "critical" || a.severity === "high");
     const labs = overview.data?.labs ?? [];
     const certs = overview.data?.certifications ?? [];
     return {
-      openAlerts: open.length,
-      highCritical: hiCrit.length,
       labs: labs.length,
       certs: certs.length,
     };
@@ -62,14 +46,14 @@ export default function Dashboard() {
           onViewProjects={() => nav("/projects")}
           onResume={() => {
             // onClick handler required even when disabled; browser will ignore if disabled
-            window.location.href = "/resume.pdf";
+            window.location.href = "/ArshdeepSinghResume.pdf";
           }}
         />
 
         {/* KPI row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
           {overview.isLoading ? (
-            Array.from({ length: 4 }).map((_, i) => (
+            Array.from({ length: 2 }).map((_, i) => (
               <Card key={i} className="glass rounded-2xl p-5">
                 <Skeleton className="h-4 w-32 bg-muted/40" />
                 <Skeleton className="mt-4 h-10 w-24 bg-muted/40" />
@@ -78,22 +62,6 @@ export default function Dashboard() {
             ))
           ) : (
             <>
-              <KpiCard
-                title="Open Alerts"
-                value={kpis.openAlerts}
-                hint="triage queue"
-                icon={Siren}
-                accent="warn"
-                data-testid="kpi-open-alerts"
-              />
-              <KpiCard
-                title="High/Critical"
-                value={kpis.highCritical}
-                hint="priority signals"
-                icon={Radar}
-                accent="accent"
-                data-testid="kpi-high-critical"
-              />
               <KpiCard
                 title="Labs Completed"
                 value={kpis.labs}
@@ -115,98 +83,8 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7">
-          {/* Alerts widget */}
-          <div className="lg:col-span-7">
-            <SectionHeader
-              title="Live Alerts Feed"
-              eyebrow="triage"
-              data-testid="dashboard-alerts-header"
-              right={
-                <Button variant="secondary" onClick={() => nav("/alerts")} data-testid="dashboard-go-alerts">
-                  Open Alerts Console
-                </Button>
-              }
-            />
-            <div className="mt-3 glass neon-ring rounded-2xl overflow-hidden">
-              <div className="px-4 sm:px-5 py-3 border-b border-border/70 flex items-center justify-between gap-3">
-                <div className="text-xs font-mono text-muted-foreground">
-                  stream: <span className="text-primary">/api/alerts</span>
-                </div>
-                <div className="text-xs font-mono text-muted-foreground flex items-center gap-2">
-                  <span className="inline-flex h-2 w-2 rounded-full bg-primary shadow-[0_0_18px_rgba(60,255,210,0.45)]" />
-                  connected
-                </div>
-              </div>
-
-              {overview.isError ? (
-                <div className="p-5">
-                  <div className="text-sm font-semibold">Failed to load alerts</div>
-                  <div className="mt-1 text-xs font-mono text-muted-foreground">
-                    {(overview.error as any)?.message ?? "Unknown error"}
-                  </div>
-                </div>
-              ) : overview.isLoading ? (
-                <div className="p-5 space-y-3">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Skeleton key={i} className="h-12 w-full bg-muted/40" />
-                  ))}
-                </div>
-              ) : (overview.data?.alerts?.length ?? 0) === 0 ? (
-                <div className="p-8 text-center">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-border/70 bg-muted/30">
-                    <FileX2 className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div className="mt-3 text-sm font-semibold">No alerts</div>
-                  <div className="mt-1 text-xs font-mono text-muted-foreground">
-                    Backend returned an empty feed.
-                  </div>
-                </div>
-              ) : (
-                <div className="divide-y divide-border/70">
-                  {(overview.data?.alerts ?? []).slice(0, 6).map((a, idx) => (
-                    <button
-                      key={a.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedAlertId(a.id);
-                        setAlertOpen(true);
-                      }}
-                      data-testid={`dashboard-alert-row-${idx}`}
-                      className="
-                        w-full text-left px-4 sm:px-5 py-4
-                        hover-elevate transition-all duration-300
-                        focus:outline-none focus:ring-4 focus:ring-primary/10
-                      "
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="min-w-0">
-                          <div className="font-semibold truncate">{a.title}</div>
-                          <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
-                            {a.summary}
-                          </div>
-                          <div className="mt-2 flex flex-wrap items-center gap-2">
-                            <span className="rounded-full border border-border/70 bg-muted/30 px-2.5 py-1 text-[11px] font-mono text-muted-foreground">
-                              src: <span className="text-foreground">{a.source}</span>
-                            </span>
-                            <span className="rounded-full border border-border/70 bg-muted/30 px-2.5 py-1 text-[11px] font-mono text-muted-foreground">
-                              env: <span className="text-foreground">{a.environment}</span>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <SeverityBadge severity={a.severity} />
-                          <StatusBadge status={a.status} />
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
           {/* Experience timeline */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-12">
             <SectionHeader
               title="Experience Timeline"
               eyebrow="ops history"
@@ -341,7 +219,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <AlertDrawer open={alertOpen} onOpenChange={setAlertOpen} alert={selectedAlert as any} />
       <ProjectModal open={projectOpen} onOpenChange={setProjectOpen} project={selectedProject as any} />
     </AppShell>
   );

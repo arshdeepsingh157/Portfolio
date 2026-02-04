@@ -191,26 +191,6 @@ export default function ProjectsPage() {
                   >
                     Edit
                   </Button>
-                  <Button
-                    onClick={() => openUrl(p.repoUrl)}
-                    variant="secondary"
-                    data-testid={`project-repo-${idx}`}
-                    className="gap-2"
-                    disabled={!p.repoUrl}
-                  >
-                    <Github className="h-4 w-4" />
-                    Repo
-                  </Button>
-                  <Button
-                    onClick={() => openUrl(p.demoUrl)}
-                    variant="secondary"
-                    data-testid={`project-demo-${idx}`}
-                    className="gap-2"
-                    disabled={!p.demoUrl}
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    Demo
-                  </Button>
                 </div>
               </Card>
             ))}

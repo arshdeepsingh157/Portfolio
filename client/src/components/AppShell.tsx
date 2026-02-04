@@ -14,14 +14,17 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { SocBackground } from "@/components/SocBackground";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import PixelCard from "@/components/PixelCard.tsx";
 
 const nav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard, testId: "nav-dashboard" },
   { href: "/projects", label: "Projects", icon: FolderKanban, testId: "nav-projects" },
   { href: "/experience", label: "Experience", icon: BriefcaseBusiness, testId: "nav-experience" },
+  { href: "/education", label: "Education", icon: GraduationCap, testId: "nav-education" },
   { href: "/certifications", label: "Certifications", icon: GraduationCap, testId: "nav-certifications" },
   { href: "/labs", label: "Labs", icon: FlaskConical, testId: "nav-labs" },
   { href: "/achievements", label: "Achievements", icon: Trophy, testId: "nav-achievements" },
@@ -40,7 +43,7 @@ function Chip(props: { label: string; value: string; tone?: "primary" | "accent"
     <div
       data-testid={props.testId}
       className={cn(
-        "rounded-full border px-3 py-1 text-[11px] font-mono tracking-tight",
+        "rounded-full border px-5 py-2.5 text-xs font-mono tracking-tight",
         tone,
       )}
     >
@@ -60,18 +63,31 @@ export function AppShell({ children }: PropsWithChildren) {
     <div className="min-h-dvh mesh-bg">
       <SocBackground />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5 lg:py-7">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-5 lg:gap-7">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-5 lg:gap-7">
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-6 lg:h-[calc(100dvh-3rem)]">
-            <div className="glass neon-ring rounded-2xl p-4 sm:p-5">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="rounded-2xl border border-border/70 bg-background/30 p-2.5">
-                    <ShieldAlert className="h-5 w-5 text-primary" />
-                  </div>
+            <div className="glass neon-ring rounded-2xl lg:h-full lg:flex lg:flex-col lg:overflow-hidden">
+              <div className="p-4 sm:p-5 lg:flex-1 lg:overflow-y-hidden lg:hover:overflow-y-auto scrollbar-neon">
+                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-5 min-w-0">
+                  <PixelCard 
+                    variant="pink" 
+                    gap={4}
+                    speed={20}
+                    colors="#10b981,#34d399,#059669"
+                    className="h-[8.5rem] w-[8.5rem] shrink-0 !rounded-full border-4 border-primary shadow-xl shadow-primary/20 ring-[6px] ring-primary/10 overflow-hidden"
+                    noFocus
+                  >
+                    <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">
+                      <Avatar className="h-32 w-32 !rounded-full bg-transparent border-none">
+                        <AvatarImage src="/arsh.png" alt="Arshdeep Singh" className="object-cover !rounded-full" />
+                        <AvatarFallback className="bg-transparent text-primary font-mono cursor-default text-5xl">AS</AvatarFallback>
+                      </Avatar>
+                    </div>
+                  </PixelCard>
                   <div className="min-w-0">
                     <div className="font-display text-lg leading-none">SOC Console</div>
-                    <div className="mt-1 text-xs font-mono text-muted-foreground truncate">
+                    <div className="mt-1 text-xs font-mono text-muted-foreground whitespace-normal break-words">
                       arshdeep.singh — portfolio runtime
                     </div>
                   </div>
@@ -127,14 +143,15 @@ export function AppShell({ children }: PropsWithChildren) {
               <div className="mt-5 hidden lg:block">
                 <div className="rounded-2xl border border-border/70 bg-background/25 p-4">
                   <div className="text-xs font-mono text-muted-foreground">system</div>
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    <Chip testId="chip-availability" label="Availability" value="Open to SOC roles" tone="primary" />
+                  <div className="mt-2 grid grid-cols-1 gap-2">
+                    <Chip testId="chip-availability" label="Availability" value="Open to SOC / Security Analyst / VAPT roles" tone="primary" />
                     <Chip testId="chip-location" label="Location" value="India" tone="muted" />
                     <Chip testId="chip-response" label="Response" value="Fast" tone="accent" />
                     <Chip testId="chip-signal" label="Signal" value="Stable" tone="muted" />
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </aside>
 

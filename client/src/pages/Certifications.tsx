@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { FileX2, Plus, ExternalLink } from "lucide-react";
+import { FileX2, Plus } from "lucide-react";
 import { useCertifications } from "@/hooks/use-portfolio";
 
 export default function CertificationsPage() {
@@ -18,8 +18,6 @@ export default function CertificationsPage() {
     const items = q.data ?? [];
     return [...items].sort((a, b) => b.year - a.year);
   }, [q.data]);
-
-  const openUrl = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
 
   return (
     <AppShell>
@@ -80,7 +78,7 @@ export default function CertificationsPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="font-semibold truncate">{c.name}</div>
+                    <div className="font-semibold">{c.name}</div>
                     <div className="mt-1 text-xs font-mono text-muted-foreground">
                       {c.issuer.replaceAll("_", " ")} • {c.year}
                     </div>
@@ -92,16 +90,6 @@ export default function CertificationsPage() {
 
                 <Separator className="my-4 bg-border/70" />
 
-                <Button
-                  variant="secondary"
-                  onClick={() => openUrl(c.credentialUrl)}
-                  disabled={!c.credentialUrl}
-                  data-testid={`cert-open-${idx}`}
-                  className="w-full gap-2"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  Open Credential
-                </Button>
               </Card>
             ))}
           </div>

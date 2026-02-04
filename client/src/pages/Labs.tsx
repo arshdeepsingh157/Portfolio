@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
-import { FileX2, Plus, ExternalLink, Search, FlaskConical } from "lucide-react";
+import { FileX2, Plus, Search, FlaskConical } from "lucide-react";
 import { useLabs } from "@/hooks/use-portfolio";
 
 export default function LabsPage() {
@@ -29,8 +29,6 @@ export default function LabsPage() {
       );
     });
   }, [q.data, search]);
-
-  const openUrl = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
 
   return (
     <AppShell>
@@ -121,19 +119,6 @@ export default function LabsPage() {
                 <div className="mt-3 rounded-2xl border border-border/70 bg-background/20 p-3">
                   <div className="text-xs font-mono text-muted-foreground">outcome</div>
                   <div className="mt-1 text-sm text-foreground line-clamp-4 whitespace-pre-wrap">{l.outcome}</div>
-                </div>
-
-                <div className="mt-4 flex items-center gap-2">
-                  <Button
-                    variant="secondary"
-                    onClick={() => openUrl(l.link)}
-                    disabled={!l.link}
-                    data-testid={`lab-open-${idx}`}
-                    className="w-full gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    Open
-                  </Button>
                 </div>
 
                 <div className="mt-3 text-[11px] font-mono text-muted-foreground">

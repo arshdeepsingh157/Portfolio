@@ -78,7 +78,7 @@ export default function AchievementsPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <div className="font-semibold truncate">{a.title}</div>
+                    <div className="font-semibold whitespace-normal break-words">{a.title}</div>
                     <div className="mt-1 text-xs font-mono text-muted-foreground">
                       {a.type.toUpperCase()} • {a.year}
                     </div>
@@ -90,7 +90,7 @@ export default function AchievementsPage() {
 
                 <Separator className="my-4 bg-border/70" />
 
-                <div className="text-sm text-foreground whitespace-pre-wrap line-clamp-6">{a.details}</div>
+                <div className="text-sm text-foreground whitespace-pre-wrap">{a.details}</div>
               </Card>
             ))}
           </div>

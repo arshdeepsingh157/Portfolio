@@ -38,7 +38,7 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
     // lightweight resume check; caches a boolean on window
     if (typeof window === "undefined") return;
     if ((window as any).__resumeExists__ !== undefined) return;
-    fetch("/resume.pdf", { method: "HEAD" })
+    fetch("/ArshdeepSinghResume.pdf", { method: "HEAD" })
       .then((r) => ((window as any).__resumeExists__ = r.ok))
       .catch(() => ((window as any).__resumeExists__ = false));
   }, []);
@@ -114,7 +114,7 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
             onClick={props.onResume}
             data-testid="cta-download-resume"
             disabled={!resumeExists}
-            title={!resumeExists ? "Add /public/resume.pdf to enable" : "Download resume"}
+            title={!resumeExists ? "Add ArshdeepSinghResume.pdf to enable" : "Download resume"}
             className="
               inline-flex items-center justify-center gap-2
               rounded-xl px-5 py-3 font-semibold
@@ -127,7 +127,7 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
             "
           >
             <span className="font-display text-base tracking-tight">Download Resume</span>
-            <span className="font-mono text-xs opacity-80">resume.pdf</span>
+            <span className="font-mono text-xs opacity-80">ArshdeepSinghResume.pdf</span>
           </button>
         </div>
       </div>

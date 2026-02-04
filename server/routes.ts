@@ -1,12 +1,14 @@
 import type { Express } from "express";
 import type { Server } from "http";
 import { z } from "zod";
+import path from "path";
 import { api, errorSchemas } from "@shared/routes";
 import {
   insertPortfolioAlertSchema,
   insertPortfolioProjectSchema,
   insertPortfolioCertificationSchema,
   insertPortfolioExperienceSchema,
+  insertPortfolioEducationSchema,
   insertPortfolioAchievementSchema,
   insertPortfolioLabSchema,
 } from "@shared/schema";
@@ -23,6 +25,10 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express,
 ): Promise<Server> {
+  app.get("/ArshdeepSinghResume.pdf", (_req, res) => {
+    res.sendFile(path.resolve(process.cwd(), "ArshdeepSinghResume.pdf"));
+  });
+
   app.get(api.portfolio.overview.path, async (_req, res) => {
     const overview = await storage.getOverview();
     res.json(overview);
@@ -148,6 +154,24 @@ export async function registerRoutes(
     try {
       const input = insertPortfolioExperienceSchema.parse(req.body);
       const created = await storage.createExperience(input);
+      res.status(201).json(created);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json(zodToValidation(err));
+      }
+      throw err;
+    }
+  });
+
+  app.get(api.education.list.path, async (_req, res) => {
+    const rows = await storage.listEducation();
+    res.json(rows);
+  });
+
+  app.post(api.education.create.path, async (req, res) => {
+    try {
+      const input = insertPortfolioEducationSchema.parse(req.body);
+      const created = await storage.createEducation(input);
       res.status(201).json(created);
     } catch (err) {
       if (err instanceof z.ZodError) {

@@ -10,6 +10,7 @@ import {
   Command,
   FileBadge,
   FlaskConical,
+  GraduationCap,
   Grid2X2,
   LaptopMinimal,
   LayoutDashboard,
@@ -36,6 +37,7 @@ const navItems: NavItem[] = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard, testId: "nav-dashboard" },
   { href: "/projects", label: "Projects", icon: Boxes, testId: "nav-projects" },
   { href: "/experience", label: "Experience", icon: BriefcaseBusiness, testId: "nav-experience" },
+  { href: "/education", label: "Education", icon: GraduationCap, testId: "nav-education" },
   { href: "/certifications", label: "Certifications", icon: BadgeCheck, testId: "nav-certifications" },
   { href: "/labs", label: "Labs", icon: FlaskConical, testId: "nav-labs" },
   { href: "/achievements", label: "Achievements", icon: Sparkles, testId: "nav-achievements" },
@@ -115,6 +117,7 @@ export default function SocShell({ children }: PropsWithChildren) {
   const activeHref = useMemo(() => {
     if (location.startsWith("/projects")) return "/projects";
     if (location.startsWith("/experience")) return "/experience";
+    if (location.startsWith("/education")) return "/education";
     if (location.startsWith("/certifications")) return "/certifications";
     if (location.startsWith("/labs")) return "/labs";
     if (location.startsWith("/achievements")) return "/achievements";
@@ -182,6 +185,8 @@ export default function SocShell({ children }: PropsWithChildren) {
                               ? "Investigations"
                               : item.label === "Projects"
                                 ? "Defensive builds"
+                                : item.label === "Education"
+                                  ? "Academic history"
                                 : item.label === "Labs"
                                   ? "Hands-on drills"
                                   : item.label === "Contact"

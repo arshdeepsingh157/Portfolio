@@ -3,6 +3,7 @@ import {
   insertPortfolioAlertSchema,
   insertPortfolioCertificationSchema,
   insertPortfolioExperienceSchema,
+  insertPortfolioEducationSchema,
   insertPortfolioLabSchema,
   insertPortfolioProjectSchema,
   insertPortfolioAchievementSchema,
@@ -10,6 +11,7 @@ import {
   portfolioProjects,
   portfolioCertifications,
   portfolioExperience,
+  portfolioEducation,
   portfolioAchievements,
   portfolioLabs,
 } from "./schema";
@@ -42,6 +44,7 @@ export const api = {
             z.custom<typeof portfolioCertifications.$inferSelect>(),
           ),
           experience: z.array(z.custom<typeof portfolioExperience.$inferSelect>()),
+          education: z.array(z.custom<typeof portfolioEducation.$inferSelect>()),
           achievements: z.array(
             z.custom<typeof portfolioAchievements.$inferSelect>(),
           ),
@@ -176,6 +179,24 @@ export const api = {
       },
     },
   },
+  education: {
+    list: {
+      method: "GET" as const,
+      path: "/api/education",
+      responses: {
+        200: z.array(z.custom<typeof portfolioEducation.$inferSelect>()),
+      },
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/education",
+      input: insertPortfolioEducationSchema,
+      responses: {
+        201: z.custom<typeof portfolioEducation.$inferSelect>(),
+        400: errorSchemas.validation,
+      },
+    },
+  },
   achievements: {
     list: {
       method: "GET" as const,
@@ -239,6 +260,7 @@ export type ProjectResponse = z.infer<typeof api.projects.get.responses[200]>;
 
 export type CertificationInput = z.infer<typeof api.certifications.create.input>;
 export type ExperienceInput = z.infer<typeof api.experience.create.input>;
+export type EducationInput = z.infer<typeof api.education.create.input>;
 export type AchievementInput = z.infer<typeof api.achievements.create.input>;
 export type LabInput = z.infer<typeof api.labs.create.input>;
 

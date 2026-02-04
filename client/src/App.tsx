@@ -9,6 +9,7 @@ import Dashboard from "@/pages/Dashboard";
 import Alerts from "@/pages/Alerts";
 import Projects from "@/pages/Projects";
 import Experience from "@/pages/Experience";
+import Education from "@/pages/Education";
 import Certifications from "@/pages/Certifications";
 import Labs from "@/pages/Labs";
 import Achievements from "@/pages/Achievements";
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/alerts" component={Alerts} />
       <Route path="/projects" component={Projects} />
       <Route path="/experience" component={Experience} />
+      <Route path="/education" component={Education} />
       <Route path="/certifications" component={Certifications} />
       <Route path="/labs" component={Labs} />
       <Route path="/achievements" component={Achievements} />

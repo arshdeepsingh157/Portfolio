@@ -279,6 +279,46 @@ export function useCreateExperience() {
   });
 }
 
+export function useEducation() {
+  return useQuery({
+    queryKey: [api.education.list.path],
+    queryFn: async () => {
+      const res = await fetch(api.education.list.path, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch education");
+      return parseWithLogging(api.education.list.responses[200], await res.json(), "education.list");
+    },
+  });
+}
+
+export function useCreateEducation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: unknown) => {
+      const validated = api.education.create.input.parse(data);
+      const res = await fetch(api.education.create.path, {
+        method: api.education.create.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validated),
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        if (res.status === 400) {
+          const err = parseWithLogging(api.education.create.responses[400], await res.json(), "education.create.400");
+          throw new Error(err.message);
+        }
+        throw new Error("Failed to create education");
+      }
+
+      return parseWithLogging(api.education.create.responses[201], await res.json(), "education.create.201");
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [api.education.list.path] });
+      qc.invalidateQueries({ queryKey: [api.portfolio.overview.path] });
+    },
+  });
+}
+
 export function useAchievements() {
   return useQuery({
     queryKey: [api.achievements.list.path],

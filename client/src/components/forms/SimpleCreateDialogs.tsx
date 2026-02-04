@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   useCreateAchievement,
   useCreateCertification,
+  useCreateEducation,
   useCreateExperience,
   useCreateLab,
 } from "@/hooks/use-portfolio";
@@ -207,6 +208,134 @@ export function ExperienceCreateDialog(props: { open: boolean; onOpenChange: (v:
               Cancel
             </Button>
             <Button type="submit" disabled={!form.formState.isValid || create.isPending} data-testid="exp-submit">
+              {create.isPending ? "Creating..." : "Create"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function EducationCreateDialog(props: { open: boolean; onOpenChange: (v: boolean) => void }) {
+  const { toast } = useToast();
+  const create = useCreateEducation();
+  const schema = useMemo(
+    () =>
+      api.education.create.input.extend({
+        startYear: z.coerce.number(),
+        endYear: z.coerce.number().optional().nullable(),
+      }),
+    [],
+  );
+
+  type V = z.infer<typeof schema>;
+  const form = useForm<V>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      institution: "",
+      location: "",
+      level: "bachelors",
+      degree: "",
+      field: "",
+      startYear: new Date().getFullYear(),
+      endYear: null as any,
+      status: "Pursuing",
+      details: "",
+    },
+    mode: "onChange",
+  });
+
+  const onSubmit = async (v: V) => {
+    try {
+      await create.mutateAsync(v);
+      toast({ title: "Education added", description: "Record created." });
+      props.onOpenChange(false);
+      form.reset();
+    } catch (e: any) {
+      toast({ title: "Create failed", description: e?.message ?? "Unknown error", variant: "destructive" as any });
+    }
+  };
+
+  return (
+    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+      <DialogContent className="max-w-2xl border-border/70 bg-background/85 backdrop-blur-xl">
+        <DialogHeader>
+          <DialogTitle data-testid="edu-create-title">Add Education</DialogTitle>
+          <DialogDescription>Institution, degree, dates, and details.</DialogDescription>
+        </DialogHeader>
+        <Separator className="my-2 bg-border/70" />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4" data-testid="edu-create-form">
+          <div className="md:col-span-2">
+            <label className="text-xs font-mono text-muted-foreground">Institution</label>
+            <Input className="mt-1" data-testid="edu-institution" {...form.register("institution")} />
+          </div>
+          <div>
+            <label className="text-xs font-mono text-muted-foreground">Location</label>
+            <Input className="mt-1" data-testid="edu-location" {...form.register("location")} />
+          </div>
+          <div>
+            <label className="text-xs font-mono text-muted-foreground">Level</label>
+            <Select value={form.watch("level")} onValueChange={(v) => form.setValue("level", v as any, { shouldValidate: true })}>
+              <SelectTrigger className="mt-1" data-testid="edu-level">
+                <SelectValue placeholder="Level" />
+              </SelectTrigger>
+              <SelectContent>
+                {["bachelors", "senior_secondary", "secondary", "diploma", "other"].map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {t.replaceAll("_", " ").toUpperCase()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-muted-foreground">Degree</label>
+            <Input className="mt-1" data-testid="edu-degree" {...form.register("degree")} />
+          </div>
+          <div>
+            <label className="text-xs font-mono text-muted-foreground">Field</label>
+            <Input className="mt-1" data-testid="edu-field" {...form.register("field")} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-mono text-muted-foreground">Start Year</label>
+              <Input className="mt-1" type="number" data-testid="edu-start-year" {...form.register("startYear")} />
+            </div>
+            <div>
+              <label className="text-xs font-mono text-muted-foreground">End Year</label>
+              <Input className="mt-1" type="number" data-testid="edu-end-year" {...form.register("endYear" as any)} />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-muted-foreground">Status</label>
+            <Select value={form.watch("status")} onValueChange={(v) => form.setValue("status", v as any, { shouldValidate: true })}>
+              <SelectTrigger className="mt-1" data-testid="edu-status">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Pursuing", "Completed"].map((t) => (
+                  <SelectItem key={t} value={t}>
+                    {t}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="text-xs font-mono text-muted-foreground">Details</label>
+            <Textarea className="mt-1 min-h-[110px]" data-testid="edu-details" {...form.register("details")} />
+          </div>
+
+          <div className="md:col-span-2 flex items-center justify-end gap-2 pt-1">
+            <Button type="button" variant="secondary" onClick={() => props.onOpenChange(false)} data-testid="edu-cancel">
+              Cancel
+            </Button>
+            <Button type="submit" disabled={!form.formState.isValid || create.isPending} data-testid="edu-submit">
               {create.isPending ? "Creating..." : "Create"}
             </Button>
           </div>
