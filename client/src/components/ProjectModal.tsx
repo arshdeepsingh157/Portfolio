@@ -81,25 +81,6 @@ export function ProjectModal(props: {
           >
             Close
           </Button>
-          <Button
-            onClick={() => openUrl(p?.repoUrl ?? "")}
-            disabled={!p?.repoUrl}
-            data-testid="project-modal-repo"
-            className="gap-2"
-          >
-            <Github className="h-4 w-4" />
-            Repo
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => openUrl(p?.demoUrl ?? "")}
-            disabled={!p?.demoUrl}
-            data-testid="project-modal-demo"
-            className="gap-2"
-          >
-            <ExternalLink className="h-4 w-4" />
-            Demo
-          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

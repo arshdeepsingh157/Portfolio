@@ -304,13 +304,13 @@ export async function seedDatabase() {
       title: "Gold Medal – AIU North Zone Bhangra",
       type: "sports",
       details: "Team achievement showcasing discipline and performance under pressure.",
-      year: 2023,
+      year: 2025,
     });
     await storage.createAchievement({
       title: "Silver Medal – AIU National Bhangra",
       type: "sports",
       details: "National-level recognition for consistent excellence.",
-      year: 2023,
+      year: 2025,
     });
   }
 

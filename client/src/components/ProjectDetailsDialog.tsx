@@ -99,26 +99,6 @@ export default function ProjectDetailsDialog({
                   {project.description}
                 </span>
               </div>
-
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  data-testid="project-open-repo"
-                  variant="outline"
-                  className="rounded-2xl"
-                  onClick={() => window.open(project.repoUrl, "_blank", "noopener,noreferrer")}
-                >
-                  <Github className="mr-2 h-4 w-4 text-muted-foreground" />
-                  Repo
-                </Button>
-                <Button
-                  data-testid="project-open-demo"
-                  className="rounded-2xl"
-                  onClick={() => window.open(project.demoUrl, "_blank", "noopener,noreferrer")}
-                >
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Demo
-                </Button>
-              </div>
             </div>
           </div>
         )}
