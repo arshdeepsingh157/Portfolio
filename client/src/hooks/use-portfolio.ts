@@ -1,5 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@shared/routes";
+import { staticOverview, staticPortfolioData } from "@/lib/static-data";
+
+const shouldUseStaticData = () => {
+  if (import.meta.env.VITE_STATIC_DATA === "true") return true;
+  if (typeof window === "undefined") return false;
+  return window.location.hostname.includes("netlify.app");
+};
 
 function parseWithLogging<T>(schema: { safeParse: (data: unknown) => any }, data: unknown, label: string): T {
   const result = schema.safeParse(data);
@@ -14,6 +21,9 @@ export function usePortfolioOverview() {
   return useQuery({
     queryKey: [api.portfolio.overview.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(api.portfolio.overview.responses[200], staticOverview, "portfolio.overview");
+      }
       const res = await fetch(api.portfolio.overview.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch portfolio overview");
       const json = await res.json();
@@ -26,6 +36,9 @@ export function useAlertsList(params?: unknown) {
   return useQuery({
     queryKey: [api.alerts.list.path, params ?? {}],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(api.alerts.list.responses[200], staticPortfolioData.alerts, "alerts.list");
+      }
       const validated = api.alerts.list.input?.optional().safeParse(params).success
         ? (params as any)
         : api.alerts.list.input?.optional().parse(params);
@@ -123,6 +136,9 @@ export function useProjects() {
   return useQuery({
     queryKey: [api.projects.list.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(api.projects.list.responses[200], staticPortfolioData.projects, "projects.list");
+      }
       const res = await fetch(api.projects.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch projects");
       return parseWithLogging(api.projects.list.responses[200], await res.json(), "projects.list");
@@ -207,6 +223,13 @@ export function useCertifications() {
   return useQuery({
     queryKey: [api.certifications.list.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(
+          api.certifications.list.responses[200],
+          staticPortfolioData.certifications,
+          "certifications.list",
+        );
+      }
       const res = await fetch(api.certifications.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch certifications");
       return parseWithLogging(api.certifications.list.responses[200], await res.json(), "certifications.list");
@@ -245,6 +268,13 @@ export function useExperience() {
   return useQuery({
     queryKey: [api.experience.list.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(
+          api.experience.list.responses[200],
+          staticPortfolioData.experience,
+          "experience.list",
+        );
+      }
       const res = await fetch(api.experience.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch experience");
       return parseWithLogging(api.experience.list.responses[200], await res.json(), "experience.list");
@@ -283,6 +313,13 @@ export function useEducation() {
   return useQuery({
     queryKey: [api.education.list.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(
+          api.education.list.responses[200],
+          staticPortfolioData.education,
+          "education.list",
+        );
+      }
       const res = await fetch(api.education.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch education");
       return parseWithLogging(api.education.list.responses[200], await res.json(), "education.list");
@@ -323,6 +360,13 @@ export function useAchievements() {
   return useQuery({
     queryKey: [api.achievements.list.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(
+          api.achievements.list.responses[200],
+          staticPortfolioData.achievements,
+          "achievements.list",
+        );
+      }
       const res = await fetch(api.achievements.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch achievements");
       return parseWithLogging(api.achievements.list.responses[200], await res.json(), "achievements.list");
@@ -361,6 +405,9 @@ export function useLabs() {
   return useQuery({
     queryKey: [api.labs.list.path],
     queryFn: async () => {
+      if (shouldUseStaticData()) {
+        return parseWithLogging(api.labs.list.responses[200], staticPortfolioData.labs, "labs.list");
+      }
       const res = await fetch(api.labs.list.path, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch labs");
       return parseWithLogging(api.labs.list.responses[200], await res.json(), "labs.list");
