@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Radar, ShieldCheck, FlaskConical, GraduationCap, FolderKanban, Activity } from "lucide-react";
@@ -37,7 +37,7 @@ export default function Dashboard() {
   return (
     <AppShell>
       <Seo
-        title="SOC Dashboard — Arshdeep Singh"
+        title="SOC Dashboard ΓÇö Arshdeep Singh"
         description="SOC-console style cybersecurity portfolio: live alerts, projects, labs, certifications, and experience timeline."
       />
 
@@ -129,12 +129,12 @@ export default function Dashboard() {
                             <div className="min-w-0">
                               <div className="font-semibold">{e.role}</div>
                               <div className="mt-1 text-xs font-mono text-muted-foreground truncate">
-                                {e.org} • {e.location}
+                                {e.org} ΓÇó {e.location}
                               </div>
                             </div>
                             <div className="text-[11px] font-mono text-muted-foreground shrink-0">
                               {String(e.startMonth).padStart(2, "0")}/{e.startYear}{" "}
-                              {e.isCurrent ? "→ present" : e.endMonth && e.endYear ? `→ ${String(e.endMonth).padStart(2, "0")}/${e.endYear}` : ""}
+                              {e.isCurrent ? "ΓåÆ present" : e.endMonth && e.endYear ? `ΓåÆ ${String(e.endMonth).padStart(2, "0")}/${e.endYear}` : ""}
                             </div>
                           </div>
                           <Separator className="my-3 bg-border/70" />
@@ -210,7 +210,7 @@ export default function Dashboard() {
                   <Separator className="my-4 bg-border/70" />
                   <div className="text-sm text-muted-foreground line-clamp-4">{p.description}</div>
                   <div className="mt-4 inline-flex items-center gap-2 text-xs font-mono text-primary">
-                    open details <span className="opacity-70">↗</span>
+                    open details <span className="opacity-70">Γåù</span>
                   </div>
                 </button>
               ))

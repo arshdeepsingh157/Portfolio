@@ -1,4 +1,4 @@
-import type { Express } from "express";
+﻿import type { Express } from "express";
 import type { Server } from "http";
 import { z } from "zod";
 import path from "path";
@@ -25,8 +25,14 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express,
 ): Promise<Server> {
+  const resumePath = path.resolve(process.cwd(), "Arshdeep Singh Resume.pdf");
+
   app.get("/ArshdeepSinghResume.pdf", (_req, res) => {
-    res.sendFile(path.resolve(process.cwd(), "ArshdeepSinghResume.pdf"));
+    res.sendFile(resumePath);
+  });
+
+  app.get("/Arshdeep%20Singh%20Resume.pdf", (_req, res) => {
+    res.sendFile(resumePath);
   });
 
   app.get(api.portfolio.overview.path, async (_req, res) => {
@@ -329,13 +335,13 @@ export async function seedDatabase() {
       year: 2024,
     });
     await storage.createAchievement({
-      title: "Gold Medal – AIU North Zone Bhangra",
+      title: "Gold Medal ΓÇô AIU North Zone Bhangra",
       type: "sports",
       details: "Team achievement showcasing discipline and performance under pressure.",
       year: 2025,
     });
     await storage.createAchievement({
-      title: "Silver Medal – AIU National Bhangra",
+      title: "Silver Medal ΓÇô AIU National Bhangra",
       type: "sports",
       details: "National-level recognition for consistent excellence.",
       year: 2025,

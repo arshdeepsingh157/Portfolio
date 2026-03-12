@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 
 function useTyping(text: string, speed = 16) {
@@ -32,15 +32,26 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
     return () => window.clearInterval(t);
   }, [phrases.length]);
 
-  const resumeExists = typeof window !== "undefined" && (window as any).__resumeExists__ === true;
+  const [resumeExists, setResumeExists] = useState(
+    typeof window !== "undefined" && (window as any).__resumeExists__ === true,
+  );
 
   useEffect(() => {
     // lightweight resume check; caches a boolean on window
     if (typeof window === "undefined") return;
-    if ((window as any).__resumeExists__ !== undefined) return;
+    if ((window as any).__resumeExists__ === true) {
+      setResumeExists(true);
+      return;
+    }
     fetch("/ArshdeepSinghResume.pdf", { method: "HEAD" })
-      .then((r) => ((window as any).__resumeExists__ = r.ok))
-      .catch(() => ((window as any).__resumeExists__ = false));
+      .then((r) => {
+        (window as any).__resumeExists__ = r.ok;
+        setResumeExists(r.ok);
+      })
+      .catch(() => {
+        (window as any).__resumeExists__ = false;
+        setResumeExists(false);
+      });
   }, []);
 
   return (
@@ -104,9 +115,6 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
             "
           >
             <span className="font-display text-base tracking-tight">View Projects</span>
-            <span className="font-mono text-xs opacity-80 group-hover:opacity-100 transition-opacity">
-              /projects
-            </span>
           </button>
 
           <button
@@ -114,7 +122,7 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
             onClick={props.onResume}
             data-testid="cta-download-resume"
             disabled={!resumeExists}
-            title={!resumeExists ? "Add ArshdeepSinghResume.pdf to enable" : "Download resume"}
+            title={!resumeExists ? "Add Arshdeep Singh Resume.pdf to enable" : "Download resume"}
             className="
               inline-flex items-center justify-center gap-2
               rounded-xl px-5 py-3 font-semibold
@@ -127,7 +135,6 @@ export function TerminalHero(props: { onViewProjects: () => void; onResume: () =
             "
           >
             <span className="font-display text-base tracking-tight">Download Resume</span>
-            <span className="font-mono text-xs opacity-80">ArshdeepSinghResume.pdf</span>
           </button>
         </div>
       </div>

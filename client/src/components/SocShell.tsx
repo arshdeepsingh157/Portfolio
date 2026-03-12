@@ -1,4 +1,4 @@
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import {
@@ -10,7 +10,7 @@ import {
   Command,
   FileBadge,
   FlaskConical,
-  GraduationCap,
+  Graduation  GraduationCap,
   Grid2X2,
   LaptopMinimal,
   LayoutDashboard,
@@ -113,6 +113,28 @@ function TopChips() {
 export default function SocShell({ children }: PropsWithChildren) {
   const [location] = useLocation();
   const { isDark, setDark } = useTheme();
+  const [resumeExists, setResumeExists] = useState(
+    typeof window !== "undefined" && (window as any).__resumeExists__ === true,
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if ((window as any).__resumeExists__ === true) {
+      setResumeExists(true);
+      return;
+    }
+
+    fetch("/ArshdeepSinghResume.pdf", { method: "HEAD" })
+      .then((r) => {
+        (window as any).__resumeExists__ = r.ok;
+        setResumeExists(r.ok);
+      })
+      .catch(() => {
+        (window as any).__resumeExists__ = false;
+        setResumeExists(false);
+      });
+  }, []);
 
   const activeHref = useMemo(() => {
     if (location.startsWith("/projects")) return "/projects";
@@ -187,14 +209,7 @@ export default function SocShell({ children }: PropsWithChildren) {
                                 ? "Defensive builds"
                                 : item.label === "Education"
                                   ? "Academic history"
-                                : item.label === "Labs"
-                                  ? "Hands-on drills"
-                                  : item.label === "Contact"
-                                    ? "Recruiter channel"
-                                    : "Signal history"}
-                        </div>
-                      </div>
-                      {active ? (
+      {active ? (
                         <div className="h-2 w-2 rounded-full bg-primary shadow-[0_0_22px_hsl(var(--primary)/0.55)]" />
                       ) : (
                         <div className="h-2 w-2 rounded-full bg-muted-foreground/30 group-hover:bg-secondary/60 transition-colors" />
@@ -245,10 +260,10 @@ export default function SocShell({ children }: PropsWithChildren) {
                           <Button
                             data-testid="resume-download"
                             size="sm"
-                            disabled
+                            disabled={!resumeExists}
                             onClick={() => {
-                              // disabled, but still wired
-                              window.open("#", "_blank", "noopener,noreferrer");
+                              if (!resumeExists) return;
+                              window.open("/ArshdeepSinghResume.pdf", "_blank", "noopener,noreferrer");
                             }}
                             className="rounded-xl"
                             variant="secondary"
@@ -258,8 +273,9 @@ export default function SocShell({ children }: PropsWithChildren) {
                         </span>
                       </TooltipTrigger>
                       <TooltipContent className="max-w-[220px]">
-                        Resume file not provided yet. Add a PDF to enable this
-                        button.
+                        {resumeExists
+                          ? "Download Arshdeep Singh Resume.pdf"
+                          : "Resume file not provided yet. Add Arshdeep Singh Resume.pdf to enable this button."}
                       </TooltipContent>
                     </Tooltip>
                   </div>
